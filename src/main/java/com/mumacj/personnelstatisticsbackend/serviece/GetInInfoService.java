@@ -39,8 +39,7 @@ public class GetInInfoService {
 //          wheLeave: "否",
 //          healthCode: true
             infoMap.put("readonly",true);
-            infoMap.put("dateTime","");
-            infoMap.put("time",sdf.format(getInInfo.getInTime()));
+            infoMap.put("dateTime",sdf.format(getInInfo.getInTime()));
             infoMap.put("name",getInInfo.getName());
             infoMap.put("address",getInInfo.getAddress());
             infoMap.put("idCard",getInInfo.getIdCard());
@@ -51,7 +50,6 @@ public class GetInInfoService {
             maps.add(infoMap);
         }
         if (maps != null && maps.size() > 0){
-            System.out.println(maps);
             return maps;
         }
         return null;
