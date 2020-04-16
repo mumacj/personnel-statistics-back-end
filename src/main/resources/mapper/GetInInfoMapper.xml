@@ -34,4 +34,33 @@
     <include refid="Base_Column_List" />
      from get_in_info
   </select>
+
+  <select id="getInfosByTime" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from get_in_info
+    where 1 = 1
+    <if test="start != null and end != null">
+        and in_time &gt;= #{start} and in_time &lt;= #{end}
+    </if>
+    <if test="name != null and name !=''"> and name = #{name} </if>
+  </select>
+
+  <update id="updateByPrimaryKey" parameterType="com.mumacj.personnelstatisticsbackend.entity.GetInInfo">
+    update get_in_info
+    set name = #{name,jdbcType=VARCHAR},
+      id_card = #{idCard,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      temperature = #{temperature,jdbcType=VARCHAR},
+      in_time = #{inTime},
+      whe_leave = #{wheLeave},
+      health_code = #{healthCode}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <delete id="deleteByPrimaryKey" parameterType="String">
+    delete from get_in_info
+    where id = #{id}
+  </delete>
+
 </mapper>

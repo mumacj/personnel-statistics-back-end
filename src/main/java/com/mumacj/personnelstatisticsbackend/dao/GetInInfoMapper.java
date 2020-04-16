@@ -3,6 +3,7 @@ package com.mumacj.personnelstatisticsbackend.dao;
 import com.mumacj.personnelstatisticsbackend.entity.GetInInfo;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -20,4 +21,6 @@ public interface GetInInfoMapper {
     int updateByPrimaryKey(GetInInfo record);
 
     List<GetInInfo> getAllInfos();
+
+    List<GetInInfo> getInfosByTimeOrName(Date start, Date end,String name);
 }

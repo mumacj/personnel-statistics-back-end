@@ -81,4 +81,64 @@ public class GetInInfoController {
         }
         return null;
     }
+
+    @RequestMapping("getInfosByTimeOrName")
+    private List<HashMap<String,Object>> getInfosByTimeOrName(@RequestBody Map<String,Object> data) throws ParseException {
+        System.out.println(data);
+        String datesString = String.valueOf(data.get("date"));
+        String name = (String) data.get("name");
+        List<HashMap<String, Object>> resultInfos = new ArrayList<>();
+        ArrayList<Date> dates = new ArrayList<>();
+        if (datesString != null && !StringUtil.isEmpty(datesString)){
+            datesString = datesString.replace("[","").replace("]","");
+            dates = new ArrayList(Arrays.asList(datesString.split(",")));
+        }
+
+        if ((dates != null && dates.size() == 2) || !StringUtil.isEmpty(name)){
+            resultInfos = getInInfoService.getInfosByTimeOrName(dates, name);
+        }
+
+        if ( resultInfos != null && resultInfos.size() > 0) {
+            return resultInfos;
+        }
+        return new ArrayList<>();
+    }
+
+    @RequestMapping("updateInfo")
+    private Boolean updateInfoById(@RequestBody Map<String,Object> data) throws ParseException {
+        System.out.println(data);
+        GetInInfo getInInfo = new GetInInfo();
+        String id = (String) data.get("id");
+        String name = (String) data.get("name");
+        String address = (String) data.get("address");
+        String idCard = (String) data.get("idCard");
+        Date inTime =sdf.parse(String.valueOf(data.get("dateTime")));
+        Double tempNow = (Double) data.get("tempNow");
+        String wheLeave = (String) data.get("wheLeave");
+        Boolean healthCode = (Boolean) data.get("healthCode");
+
+         getInInfo.setId(id);
+         getInInfo.setName(name);
+         getInInfo.setIdCard(idCard);
+         getInInfo.setAddress(address);
+         getInInfo.setInTime(inTime);
+         getInInfo.setTemperature(tempNow);
+         getInInfo.setWheLeave("否".equals(wheLeave)?"0":"1");
+         getInInfo.setHealthCode(healthCode?"1":"0");
+
+         if (getInInfoService.updateInfo(getInInfo)) {
+             return true;
+         }
+         return false;
+
+    }
+
+    @RequestMapping("deleteInfo/{id}")
+    private Boolean deleteInfoById(@PathVariable String id) {
+        if (id != null && !StringUtil.isEmpty(id)) {
+            return getInInfoService.deleteInfo(id);
+        }
+        return false;
+    }
+
 }

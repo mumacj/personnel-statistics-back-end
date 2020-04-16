@@ -5,11 +5,9 @@ import com.mumacj.personnelstatisticsbackend.entity.GetInInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class GetInInfoService {
@@ -27,8 +25,60 @@ public class GetInInfoService {
     public List<HashMap<String,Object>> getAllInfos(){
         List<GetInInfo> getInInfos =  getInInfoMapper.getAllInfos();
         List<HashMap<String,Object>> maps = new ArrayList<>();
-        for (GetInInfo getInInfo : getInInfos){
-            HashMap<String,Object> infoMap = new HashMap<>();
+        maps = formatInfos(getInInfos);
+        if (maps != null && maps.size() > 0){
+            return maps;
+        }
+        return null;
+    }
+
+    public List<HashMap<String, Object>> getInfosByTimeOrName(ArrayList<Date> dates,String name) throws ParseException {
+        Date start = null;
+        Date end = null;
+        if (dates != null && dates.size() == 2) {
+            String startString = "";
+            String endString = "";
+
+            startString = String.valueOf(dates.get(0)).replace("Z", " UTC");
+            endString = String.valueOf(dates.get(1)).replace("Z", " UTC");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");
+            start = format.parse(startString);
+            end = format.parse(endString);
+            System.out.println(start);
+            System.out.println(end);
+        }
+
+        List<GetInInfo> infos =  getInInfoMapper.getInfosByTimeOrName(start, end,name);
+
+        System.out.println(infos);
+        List<HashMap<String,Object>> maps = new ArrayList<>();
+        maps = formatInfos(infos);
+        if (maps != null && maps.size() > 0){
+            return maps;
+        }
+        return null;
+    }
+
+    public Boolean updateInfo(GetInInfo getInInfo){
+        if (getInInfoMapper.updateByPrimaryKey(getInInfo) > 0){
+            return true;
+        }
+        return false;
+
+    }
+
+    public Boolean deleteInfo(String id){
+        if (getInInfoMapper.deleteByPrimaryKey(id) > 0){
+            return true;
+        }
+        return false;
+    }
+
+    private List<HashMap<String, Object>> formatInfos(List<GetInInfo> getInInfos){
+        List<HashMap<String,Object>> maps = new ArrayList<>();
+        if (getInInfos != null && getInInfos.size() > 0){
+            for (GetInInfo getInInfo : getInInfos){
+                HashMap<String,Object> infoMap = new HashMap<>();
 //          readonly: true,
 //          dateTime: "",
 //          time: "8:20:30",
@@ -38,18 +88,18 @@ public class GetInInfoService {
 //          tempNow: "37.5",
 //          wheLeave: "否",
 //          healthCode: true
-            infoMap.put("readonly",true);
-            infoMap.put("dateTime",sdf.format(getInInfo.getInTime()));
-            infoMap.put("name",getInInfo.getName());
-            infoMap.put("address",getInInfo.getAddress());
-            infoMap.put("idCard",getInInfo.getIdCard());
-            infoMap.put("tempNow",getInInfo.getTemperature());
-            infoMap.put("wheLeave","0".equals(getInInfo.getWheLeave())?"否":"是");
-            infoMap.put("healthCode","0".equals(getInInfo.getHealthCode())?false:true);
+                infoMap.put("id",getInInfo.getId());
+                infoMap.put("readonly",true);
+                infoMap.put("dateTime",sdf.format(getInInfo.getInTime()));
+                infoMap.put("name",getInInfo.getName());
+                infoMap.put("address",getInInfo.getAddress());
+                infoMap.put("idCard",getInInfo.getIdCard());
+                infoMap.put("tempNow",getInInfo.getTemperature());
+                infoMap.put("wheLeave","0".equals(getInInfo.getWheLeave())?"否":"是");
+                infoMap.put("healthCode","0".equals(getInInfo.getHealthCode())?false:true);
 
-            maps.add(infoMap);
-        }
-        if (maps != null && maps.size() > 0){
+                maps.add(infoMap);
+            }
             return maps;
         }
         return null;

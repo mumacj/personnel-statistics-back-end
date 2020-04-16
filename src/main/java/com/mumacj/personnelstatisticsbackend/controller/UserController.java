@@ -36,7 +36,9 @@ public class UserController {
         }else if (!StringUtil.isEmpty(idCard)){
             HashMap<String,Object> result = (HashMap<String, Object>) userService.selectById(idCard);
             ArrayList<Map> resultArr = new ArrayList<>();
-            resultArr.add(result);
+            if (result != null) {
+                resultArr.add(result);
+            }
             return resultArr;
         }else {
             return new ArrayList<>();
