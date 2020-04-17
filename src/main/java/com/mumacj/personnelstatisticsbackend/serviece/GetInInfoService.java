@@ -104,4 +104,8 @@ public class GetInInfoService {
         }
         return null;
     }
+
+    public List<HashMap<String,Object>> getTemps(String idCard){
+        return getInInfoMapper.getTemps(idCard);
+    }
 }

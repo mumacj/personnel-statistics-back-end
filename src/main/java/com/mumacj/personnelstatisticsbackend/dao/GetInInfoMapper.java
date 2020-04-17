@@ -4,6 +4,7 @@ import com.mumacj.personnelstatisticsbackend.entity.GetInInfo;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -23,4 +24,6 @@ public interface GetInInfoMapper {
     List<GetInInfo> getAllInfos();
 
     List<GetInInfo> getInfosByTimeOrName(Date start, Date end,String name);
+
+    List<HashMap<String, Object>> getTemps(String idCard);
 }

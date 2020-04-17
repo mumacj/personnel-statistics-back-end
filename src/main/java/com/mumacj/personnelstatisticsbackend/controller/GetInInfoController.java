@@ -96,6 +96,8 @@ public class GetInInfoController {
 
         if ((dates != null && dates.size() == 2) || !StringUtil.isEmpty(name)){
             resultInfos = getInInfoService.getInfosByTimeOrName(dates, name);
+        }else if (dates != null && dates.size() == 0 && StringUtil.isEmpty(name)){
+            resultInfos = getInInfoService.getAllInfos();
         }
 
         if ( resultInfos != null && resultInfos.size() > 0) {
@@ -139,6 +141,14 @@ public class GetInInfoController {
             return getInInfoService.deleteInfo(id);
         }
         return false;
+    }
+
+    @RequestMapping("getTemps/{idCard}")
+    private List<HashMap<String,Object>> getTemps(@PathVariable String idCard){
+        if (!StringUtil.isEmpty(idCard)){
+            return getInInfoService.getTemps(idCard);
+        }
+        return new ArrayList<>();
     }
 
 }

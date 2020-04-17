@@ -17,7 +17,7 @@ public class UserService {
         return userMapper.selectByPrimaryKey(id);
     }
 
-    public List<User> getAllUsers(){
+    public List<Map> getAllUsers(){
         return userMapper.getAllUsers();
     }
 

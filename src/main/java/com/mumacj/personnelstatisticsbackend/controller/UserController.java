@@ -20,18 +20,15 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping("getAllUsers")
-    private List<User> getAllUsers(){
+    private List<Map> getAllUsers(){
         return userService.getAllUsers();
     }
 
     @RequestMapping("getUserByUsernameOrId")
     private List<Map> getUserByUsernameOrId(@RequestBody  Map<String,String> data){
-        System.out.println(data);
         String userName = data.get("username");
         String idCard = data.get("idcard");
-        System.out.println(userName);
         if (!StringUtil.isEmpty(userName)) {
-            System.out.println("进来");
             return userService.selectByUsername(userName);
         }else if (!StringUtil.isEmpty(idCard)){
             HashMap<String,Object> result = (HashMap<String, Object>) userService.selectById(idCard);
@@ -41,7 +38,7 @@ public class UserController {
             }
             return resultArr;
         }else {
-            return new ArrayList<>();
+            return userService.getAllUsers();
         }
     }
 }

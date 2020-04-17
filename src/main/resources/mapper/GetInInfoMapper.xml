@@ -35,7 +35,7 @@
      from get_in_info
   </select>
 
-  <select id="getInfosByTime" resultMap="BaseResultMap">
+  <select id="getInfosByTimeOrName" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from get_in_info
@@ -62,5 +62,12 @@
     delete from get_in_info
     where id = #{id}
   </delete>
+
+  <select id="getTemps" parameterType="String" resultType="map">
+    select temperature,in_time from get_in_info
+    where id_card = #{idCard}
+    ORDER BY in_time ASC
+    LIMIT 7
+  </select>
 
 </mapper>
