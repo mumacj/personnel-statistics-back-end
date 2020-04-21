@@ -26,4 +26,6 @@ public interface GetInInfoMapper {
     List<GetInInfo> getInfosByTimeOrName(Date start, Date end,String name);
 
     List<HashMap<String, Object>> getTemps(String idCard);
+
+    List<HashMap<String, Object>> getInfosByDate();
 }

@@ -33,6 +33,7 @@
     select
     <include refid="Base_Column_List" />
      from get_in_info
+     order by in_time DESC
   </select>
 
   <select id="getInfosByTimeOrName" resultMap="BaseResultMap">
@@ -68,6 +69,12 @@
     where id_card = #{idCard}
     ORDER BY in_time ASC
     LIMIT 7
+  </select>
+
+  <select id="getInfosByDate" resultType="map">
+    select temperature,in_time from get_in_info
+    where to_days(in_time) = to_days(now())
+    ORDER BY in_time ASC
   </select>
 
 </mapper>

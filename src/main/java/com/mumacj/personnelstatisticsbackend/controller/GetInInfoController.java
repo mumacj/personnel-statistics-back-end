@@ -151,4 +151,10 @@ public class GetInInfoController {
         return new ArrayList<>();
     }
 
+    @RequestMapping("getDailyTempInfo")
+    private HashMap<String,Object> getDailyTempInfo(){
+        HashMap<String, Object> dailyTempInfo = getInInfoService.getDailyTempInfo();
+        return dailyTempInfo;
+    }
+
 }

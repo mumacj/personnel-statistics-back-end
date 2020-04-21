@@ -108,4 +108,31 @@ public class GetInInfoService {
     public List<HashMap<String,Object>> getTemps(String idCard){
         return getInInfoMapper.getTemps(idCard);
     }
+
+    public HashMap<String, Object> getDailyTempInfo(){
+        List<HashMap<String, Object>> infosByDate = getInInfoMapper.getInfosByDate();
+        System.out.println(infosByDate);
+        int high = 0;
+        int health = 0;
+        int low = 0;
+        for (HashMap<String, Object> info : infosByDate){
+            Double temp = (Double) info.get("temperature");
+            if (temp >= 37.3){
+                high ++;
+            }else if (temp < 37.3 && temp >= 36.0){
+                health ++;
+            }else {
+                low ++;
+            }
+        }
+        HashMap<String,Object> numMap = new HashMap<>();
+        numMap.put("high",high);
+        numMap.put("health",health);
+        numMap.put("low",low);
+
+        HashMap<String,Object> returnMap = new HashMap<>();
+        returnMap.put("pieData",numMap);
+        returnMap.put("tempData",infosByDate);
+        return returnMap;
+    }
 }
