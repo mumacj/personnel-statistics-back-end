@@ -45,6 +45,7 @@
         and in_time &gt;= #{start} and in_time &lt;= #{end}
     </if>
     <if test="name != null and name !=''"> and name = #{name} </if>
+     order by in_time DESC
   </select>
 
   <update id="updateByPrimaryKey" parameterType="com.mumacj.personnelstatisticsbackend.entity.GetInInfo">

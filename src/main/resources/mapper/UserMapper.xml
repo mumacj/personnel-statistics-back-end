@@ -20,4 +20,11 @@
     select user.id_card, user.username , user.address,user.registe_date,user.in_times from user
     where user.username = #{userName}
   </select>
+
+  <insert id="insert" parameterType="com.mumacj.personnelstatisticsbackend.entity.User">
+    insert into user (id_card, username, password,address,registe_date,in_times)
+    values (#{idCard,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},
+     #{registeDate,jdbcType=TIMESTAMP},#{inTimes,jdbcType=INTEGER}
+      )
+  </insert>
 </mapper>

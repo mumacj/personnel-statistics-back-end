@@ -24,4 +24,12 @@ public class UserService {
     public List<Map> selectByUsername(String userName){
         return userMapper.selectByUsername(userName);
     }
+
+
+    public Boolean addUser(User user){
+        if (userMapper.insert(user) > 0){
+            return true;
+        }
+        return false;
+    }
 }
