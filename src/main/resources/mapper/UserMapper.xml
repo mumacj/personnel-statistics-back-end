@@ -9,6 +9,10 @@
     <result column="registe_date" jdbcType="DATE" property="registeDate" />
     <result column="in_times" jdbcType="INTEGER" property="inTimes" />
   </resultMap>
+
+  <sql id="Base_Column_List">
+    id_card, username,password, address, registe_date, in_times
+  </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultType="map">
     select user.id_card, user.username , user.address,user.registe_date,user.in_times from user
     where id_card = #{id,jdbcType=INTEGER}
@@ -27,4 +31,27 @@
      #{registeDate,jdbcType=TIMESTAMP},#{inTimes,jdbcType=INTEGER}
       )
   </insert>
+
+  <select id="selectLikeId" resultType="map">
+    select user.id_card as value , user.username , user.address from user
+    where user.id_card LIKE #{idCard,jdbcType=VARCHAR}"%"
+  </select>
+
+  <select id="getInfoById" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where user.id_card = #{idCard,jdbcType=VARCHAR}
+  </select>
+
+  <update id="updateByPrimaryKey" parameterType="com.mumacj.personnelstatisticsbackend.entity.User">
+    update user
+    set id_card = #{idCard,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      registe_date = #{registeDate},
+      in_times = #{inTimes}
+    where id_card = #{idCard,jdbcType=VARCHAR}
+  </update>
 </mapper>

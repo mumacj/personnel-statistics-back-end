@@ -75,4 +75,12 @@ public class UserController {
         return userService.addUser(user);
 
     }
+
+    @RequestMapping("getInfosLikeId")
+    private List<HashMap<String,Object>> getInfosLikeId(@RequestBody Map<String,String> idCard){
+        System.out.println(idCard);
+        String id = idCard.get("queryString");
+        List<HashMap<String, Object>> infos = userService.selectLikeId(id);
+        return infos;
+    }
 }

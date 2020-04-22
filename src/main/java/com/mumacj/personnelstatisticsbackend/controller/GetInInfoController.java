@@ -2,7 +2,9 @@ package com.mumacj.personnelstatisticsbackend.controller;
 
 import com.github.pagehelper.util.StringUtil;
 import com.mumacj.personnelstatisticsbackend.entity.GetInInfo;
+import com.mumacj.personnelstatisticsbackend.entity.User;
 import com.mumacj.personnelstatisticsbackend.serviece.GetInInfoService;
+import com.mumacj.personnelstatisticsbackend.serviece.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +19,14 @@ public class GetInInfoController {
 
     @Autowired
     private GetInInfoService getInInfoService;
+    @Autowired
+    private UserService userService;
+
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
 
     @RequestMapping("addInfo")
     private Boolean addInfo(@RequestBody Map<String,Object> data) throws ParseException {
         String uuid = UUID.randomUUID().toString().replaceAll("-","");
-        System.out.println(data);
 
         String name = (String) data.get("name");
         String idCard = (String) data.get("idCard");
@@ -38,7 +42,6 @@ public class GetInInfoController {
         Boolean healthCode = (Boolean) data.get("healthCode");
 
         GetInInfo getInInfo = new GetInInfo();
-        System.out.println(uuid);
         getInInfo.setId(uuid);
         if (!StringUtil.isEmpty(name)){
             getInInfo.setName(name);
@@ -68,8 +71,14 @@ public class GetInInfoController {
         getInInfo.setRegistTime(new Date());
         getInInfo.setRegistePeople("aaa");
 
-        return getInInfoService.addInfo(getInInfo);
-
+        User infoById = userService.getInfoById(idCard);
+        if (getInInfoService.addInfo(getInInfo)) {
+            infoById.setInTimes(infoById.getInTimes() + 1);
+            if (userService.updateInfo(infoById)){
+                return true;
+            }
+        }
+        return false;
     }
 
     @RequestMapping("getInfos")
