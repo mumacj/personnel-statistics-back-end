@@ -8,6 +8,7 @@ import com.mumacj.personnelstatisticsbackend.serviece.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.DocFlavor;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -82,9 +83,12 @@ public class GetInInfoController {
     }
 
     @RequestMapping("getInfos")
-    private List<HashMap<String, Object>> getInfos(){
+    private List<HashMap<String, Object>> getInfos(@RequestBody Map<String,Object> data){
+        HashMap<String,Object> pageData = (HashMap<String, Object>) data;
+        Integer currentPage = Integer.valueOf(pageData.get("currentPage").toString());
+        Integer size = Integer.valueOf(pageData.get("size").toString());
         List<HashMap<String, Object>> getInInfos = new ArrayList<>();
-        getInInfos = getInInfoService.getAllInfos();
+        getInInfos = getInInfoService.getAllInfosWithPage(currentPage,size);
         if (getInInfos != null && getInInfos.size() > 0){
             return getInInfos;
         }

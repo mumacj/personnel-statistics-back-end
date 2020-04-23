@@ -28,4 +28,6 @@ public interface GetInInfoMapper {
     List<HashMap<String, Object>> getTemps(String idCard);
 
     List<HashMap<String, Object>> getInfosByDate();
+
+    List<GetInInfo> getAllInfosWithPage(Integer start,Integer size);
 }

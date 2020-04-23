@@ -78,4 +78,12 @@
     ORDER BY in_time ASC
   </select>
 
+  <select id="getAllInfosWithPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from get_in_info
+    order by in_time DESC
+    LIMIT #{start},#{size}
+  </select>
+
 </mapper>

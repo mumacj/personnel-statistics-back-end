@@ -22,6 +22,17 @@ public class GetInInfoService {
          return false;
     }
 
+    public List<HashMap<String,Object>> getAllInfosWithPage(Integer currentPage,Integer size){
+        Integer start = (currentPage-1)*size;
+        List<GetInInfo> getInInfos =  getInInfoMapper.getAllInfosWithPage(start, size);
+        List<HashMap<String,Object>> maps = new ArrayList<>();
+        maps = formatInfos(getInInfos);
+        if (maps != null && maps.size() > 0){
+            return maps;
+        }
+        return null;
+    }
+
     public List<HashMap<String,Object>> getAllInfos(){
         List<GetInInfo> getInInfos =  getInInfoMapper.getAllInfos();
         List<HashMap<String,Object>> maps = new ArrayList<>();
